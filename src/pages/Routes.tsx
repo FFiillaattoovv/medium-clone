@@ -1,8 +1,8 @@
 import {Switch, Route} from "react-router-dom";
-import GlobalFeed from "./globalFeed/GlobalFeed";
-import Article from "./article/Article";
+import {Article} from "./article/Article";
+import {GlobalFeed} from "./globalFeed/GlobalFeed";
 
-const Routes = () => {
+export const Routes = () => {
     return (
         <Switch>
             <Route path={'/'} component={GlobalFeed} exact/>
@@ -10,5 +10,3 @@ const Routes = () => {
         </Switch>
     )
 }
-
-export default Routes;

@@ -1,11 +1,9 @@
 import React from 'react';
 
-function GlobalFeed() {
+export const GlobalFeed = () => {
     return (
         <div>
-            <h3>GlobalFeed</h3>
+
         </div>
     );
 }
-
-export default GlobalFeed;
