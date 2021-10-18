@@ -6,7 +6,7 @@ export const TopBar = () => {
         <nav className="navbar navbar-light">
             <div className="container">
                 <Link to={'/'} className="navbar-brand">
-                    Medium clone
+                    Medium
                 </Link>
                 <ul className="nav navbar-nav pull-xs-right">
                     <li className="nav-item">
