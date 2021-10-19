@@ -1,5 +1,5 @@
 import React, {FormEvent, useEffect, useState} from 'react';
-import {Link, RouteComponentProps} from 'react-router-dom';
+import {Link, Redirect, RouteComponentProps} from 'react-router-dom';
 import {useFetch} from "../../hooks/useFetch";
 
 export const Authentication = (props: RouteComponentProps) => {
@@ -12,6 +12,7 @@ export const Authentication = (props: RouteComponentProps) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
+    const [isSuccessfulSubmit, setIsSuccessfulSubmit] = useState(false)
     const [{response, isLoading, error}, doFetch] = useFetch(apiUrl)
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -30,8 +31,13 @@ export const Authentication = (props: RouteComponentProps) => {
             return
         } else {
             localStorage.setItem('token', response.user.token)
+            setIsSuccessfulSubmit(true)
         }
     }, [response])
+
+    if (isSuccessfulSubmit) {
+        return <Redirect to={'/'}/>
+    }
 
     return (
         <div className="auth-page">
@@ -80,7 +86,7 @@ export const Authentication = (props: RouteComponentProps) => {
                                 </button>
                             </fieldset>
                         </form>
-                        {error && <h3>{error}</h3>}
+                        {/*{error && <h3>{error}</h3>}*/}
                     </div>
                 </div>
             </div>
