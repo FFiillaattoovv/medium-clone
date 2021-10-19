@@ -3,6 +3,7 @@ import {Link, Redirect, RouteComponentProps} from 'react-router-dom';
 import {useFetch} from "../../hooks/useFetch";
 import {useLocalStorage} from "../../hooks/useLocalStorage";
 import {ContextType, CurrentUserContext, StateType} from "../../contexts/CurrentUser";
+import {BackendErrorMessages} from "./components/BackendErrorMessages";
 
 export const Authentication = (props: RouteComponentProps) => {
     const isLogin = props.match.path === '/login'
@@ -15,11 +16,10 @@ export const Authentication = (props: RouteComponentProps) => {
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
     const [isSuccessfulSubmit, setIsSuccessfulSubmit] = useState(false)
-    const [currentUserState, setCurrentUserState] = useContext(CurrentUserContext) as ContextType
-    const [{response, isLoading}, doFetch] = useFetch(apiUrl)
-    const [token, setToken] = useLocalStorage('token')
+    const [, setCurrentUserState] = useContext(CurrentUserContext) as ContextType
+    const [{response, isLoading, error}, doFetch] = useFetch(apiUrl)
+    const [, setToken] = useLocalStorage('token')
 
-    console.log(currentUserState)
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -45,7 +45,7 @@ export const Authentication = (props: RouteComponentProps) => {
                 currentUser: response.user
             }))
         }
-    }, [response, setToken])
+    }, [response, setToken, setCurrentUserState])
 
     if (isSuccessfulSubmit) {
         return <Redirect to={'/'}/>
@@ -61,6 +61,7 @@ export const Authentication = (props: RouteComponentProps) => {
                             <Link to={descriptionLink}>{descriptionText}</Link>
                         </p>
                         <form onSubmit={handleSubmit}>
+                            {error && <BackendErrorMessages backendErrors={error.errors}/>}
                             <fieldset>
                                 {
                                     !isLogin &&

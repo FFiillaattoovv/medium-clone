@@ -44,4 +44,4 @@ type ResponseType = {
 
 type doFetchType = (options?: {}) => void
 
-type HookResponseType = {response: ResponseType, isLoading: boolean, error: string} & doFetchType
+type HookResponseType = {response: ResponseType, isLoading: boolean, error: any} & doFetchType
