@@ -14,8 +14,8 @@ export const Authentication = (props: RouteComponentProps) => {
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
     const [isSuccessfulSubmit, setIsSuccessfulSubmit] = useState(false)
-    const [{response, isLoading, error}, doFetch] = useFetch(apiUrl)
-    const [token, setToken] = useLocalStorage('token')
+    const [{response, isLoading}, doFetch] = useFetch(apiUrl)
+    const [setToken] = useLocalStorage('token')
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -35,7 +35,7 @@ export const Authentication = (props: RouteComponentProps) => {
             setToken(response.user.token)
             setIsSuccessfulSubmit(true)
         }
-    }, [response])
+    }, [response, setToken])
 
     if (isSuccessfulSubmit) {
         return <Redirect to={'/'}/>
@@ -88,7 +88,6 @@ export const Authentication = (props: RouteComponentProps) => {
                                 </button>
                             </fieldset>
                         </form>
-                        {/*{error && <h3>{error}</h3>}*/}
                     </div>
                 </div>
             </div>
