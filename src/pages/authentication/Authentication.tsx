@@ -1,6 +1,7 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import {Link, Redirect, RouteComponentProps} from 'react-router-dom';
 import {useFetch} from "../../hooks/useFetch";
+import {useLocalStorage} from "../../hooks/useLocalStorage";
 
 export const Authentication = (props: RouteComponentProps) => {
     const isLogin = props.match.path === '/login'
@@ -14,6 +15,7 @@ export const Authentication = (props: RouteComponentProps) => {
     const [username, setUsername] = useState('')
     const [isSuccessfulSubmit, setIsSuccessfulSubmit] = useState(false)
     const [{response, isLoading, error}, doFetch] = useFetch(apiUrl)
+    const [token, setToken] = useLocalStorage('token')
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -30,7 +32,7 @@ export const Authentication = (props: RouteComponentProps) => {
         if (!response) {
             return
         } else {
-            localStorage.setItem('token', response.user.token)
+            setToken(response.user.token)
             setIsSuccessfulSubmit(true)
         }
     }, [response])
