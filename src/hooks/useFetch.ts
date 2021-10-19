@@ -14,7 +14,7 @@ export const useFetch = (url: string) => {
     }
 
     useEffect(() => {
-        if (!setIsLoading) {
+        if (!isLoading) {
             return
         }
 
