@@ -1,7 +1,8 @@
-import React, {FormEvent, useEffect, useState} from 'react';
+import React, {FormEvent, useContext, useEffect, useState} from 'react';
 import {Link, Redirect, RouteComponentProps} from 'react-router-dom';
 import {useFetch} from "../../hooks/useFetch";
 import {useLocalStorage} from "../../hooks/useLocalStorage";
+import {ContextType, CurrentUserContext, StateType} from "../../contexts/CurrentUser";
 
 export const Authentication = (props: RouteComponentProps) => {
     const isLogin = props.match.path === '/login'
@@ -14,8 +15,11 @@ export const Authentication = (props: RouteComponentProps) => {
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
     const [isSuccessfulSubmit, setIsSuccessfulSubmit] = useState(false)
+    const [currentUserState, setCurrentUserState] = useContext(CurrentUserContext) as ContextType
     const [{response, isLoading}, doFetch] = useFetch(apiUrl)
-    const [setToken] = useLocalStorage('token')
+    const [token, setToken] = useLocalStorage('token')
+
+    console.log(currentUserState)
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -34,6 +38,12 @@ export const Authentication = (props: RouteComponentProps) => {
         } else {
             setToken(response.user.token)
             setIsSuccessfulSubmit(true)
+            setCurrentUserState((state: StateType) => ({
+                ...state,
+                isLoggedIn: true,
+                isLoading: false,
+                currentUser: response.user
+            }))
         }
     }, [response, setToken])
 
