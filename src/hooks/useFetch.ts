@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import {useLocalStorage} from "./useLocalStorage";
 
@@ -10,10 +10,10 @@ export const useFetch = (url: string) => {
     const [options, setOptions] = useState({})
     const [token] = useLocalStorage('token')
 
-    const doFetch = (options = {}) => {
+    const doFetch = useCallback((options = {}) => {
         setOptions(options)
         setIsLoading(true)
-    }
+    }, [])
 
     useEffect(() => {
         const requestOptions = {
