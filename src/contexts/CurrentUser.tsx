@@ -1,7 +1,8 @@
-import React, {createContext, useState} from "react";
+import React, {createContext, Dispatch, SetStateAction, useState} from "react";
 
 
-export const CurrentUserContext = createContext([{}, () => {}])
+export const CurrentUserContext = createContext<ContextType>([{}, () => {}])
+
 
 export const CurrentUserProvider: React.FC = ({children}) => {
     const [state, setState] = useState<StateType>({
@@ -10,7 +11,7 @@ export const CurrentUserProvider: React.FC = ({children}) => {
         currentUser: null,
     })
     return (
-        <CurrentUserContext.Provider value={[state, setState]}>
+        <CurrentUserContext.Provider value={[state, setState] as ContextType}>
             {children}
         </CurrentUserContext.Provider>
     )
@@ -28,4 +29,4 @@ export type StateType = {
     } | null
 } | {}
 
-export type ContextType = [StateType, (state: StateType) => StateType]
+export type ContextType = [StateType, Dispatch<SetStateAction<StateType>>]
