@@ -42,16 +42,6 @@ export const useFetch = (url: string) => {
     return [{response, isLoading, error}, doFetch] as Array<HookResponseType>
 }
 
-type ResponseType = {
-    user: {
-        bio: string | null
-        email: string
-        image: string
-        token: string
-        username: string
-    }
-}
-
 type doFetchType = (options?: {}) => void
 
-type HookResponseType = {response: ResponseType, isLoading: boolean, error: any} & doFetchType
+export type HookResponseType = { response: any, isLoading: boolean, error: any } & doFetchType
