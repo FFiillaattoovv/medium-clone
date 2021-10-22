@@ -8,6 +8,7 @@ import {stringify} from "query-string";
 import {PopularTags} from "../../components/PopularTags";
 import {Loading} from "../../components/Loading";
 import {ErrorMessage} from "../../components/ErrorMessage";
+import {FeedToggler} from "../../components/FeedToggler";
 
 export const GlobalFeed = ({location, match}: RouteComponentProps) => {
     const {currentPage, offset} = getPaginator(location.search)
@@ -33,6 +34,7 @@ export const GlobalFeed = ({location, match}: RouteComponentProps) => {
             <div className="container page">
                 <div className="row">
                     <div className="col-md-9">
+                        <FeedToggler />
                         {isLoading && <Loading/>}
                         {error && <ErrorMessage/>}
                         {!isLoading && response && (
