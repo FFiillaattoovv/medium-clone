@@ -10,11 +10,14 @@ import {Loading} from "../../components/Loading";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {FeedToggler} from "../../components/FeedToggler";
 
-export const GlobalFeed = ({location, match}: RouteComponentProps) => {
+export const TagFeed = ({location, match}: RouteComponentProps) => {
+    const tagName = match.url.split('/').pop()
+    console.log(tagName)
     const {currentPage, offset} = getPaginator(location.search)
     const stringifiedParams = stringify({
         limit,
-        offset
+        offset,
+        tag: tagName
     })
     const apiUrl = `/articles?${stringifiedParams}`
     const [{response, isLoading, error}, doFetch] = useFetch(apiUrl) as Array<HookResponseType>
@@ -22,7 +25,7 @@ export const GlobalFeed = ({location, match}: RouteComponentProps) => {
 
     useEffect(() => {
         doFetch()
-    }, [doFetch, currentPage])
+    }, [doFetch, currentPage, tagName])
     return (
         <div className="home-page">
             <div className="banner">
@@ -34,7 +37,7 @@ export const GlobalFeed = ({location, match}: RouteComponentProps) => {
             <div className="container page">
                 <div className="row">
                     <div className="col-md-9">
-                        <FeedToggler />
+                        <FeedToggler tagName={tagName}/>
                         {isLoading && <Loading/>}
                         {error && <ErrorMessage/>}
                         {!isLoading && response && (
