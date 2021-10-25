@@ -1,32 +1,62 @@
-import React, {createContext, Dispatch, SetStateAction, useState} from "react";
+import React, {createContext, Dispatch, useReducer} from "react";
+
+const initialState: StateType = {
+    isLoading: false,
+    isLoggedIn: null,
+    currentUser: null,
+}
+
+const reducer = (state: StateType, action: ActionsType) => {
+    switch (action.type) {
+        case 'LOADING':
+            return {...state, isLoading: true}
+        case 'SET_AUTHORIZED':
+            return {
+                ...state,
+                isLoading: false,
+                isLoggedIn: true,
+                currentUser: action.payload
+            }
+        case 'SET_UNAUTHORIZED':
+            return {
+                ...state,
+                isLoggedIn: false
+            }
+        default:
+            return state
+    }
+}
 
 
-export const CurrentUserContext = createContext<ContextType>([{}, () => {}])
+export const CurrentUserContext = createContext({})
 
 
 export const CurrentUserProvider: React.FC = ({children}) => {
-    const [state, setState] = useState<StateType>({
-        isLoading: false,
-        isLoggedIn: null,
-        currentUser: null,
-    })
+    const value = useReducer(reducer, initialState)
     return (
-        <CurrentUserContext.Provider value={[state, setState] as ContextType}>
+        <CurrentUserContext.Provider value={value}>
             {children}
         </CurrentUserContext.Provider>
     )
 }
 
+// types
+type CurrentUserType = {
+    email: string
+    token: string
+    username: string
+    bio: string
+    image: string | null
+}
 export type StateType = {
     isLoading: boolean
     isLoggedIn: boolean | null
-    currentUser: {
-        email: string
-        token: string
-        username: string
-        bio: string
-        image: string | null
-    } | null
+    currentUser: CurrentUserType | null
 } | {}
 
-export type ContextType = [StateType, Dispatch<SetStateAction<StateType>>]
+type LoadingActionType = {type: 'LOADING'}
+type SetAuthorizedActionType = {type: 'SET_AUTHORIZED', payload: CurrentUserType}
+type SetUnauthorizedActionType = {type: 'SET_UNAUTHORIZED'}
+type ActionsType = LoadingActionType | SetAuthorizedActionType | SetUnauthorizedActionType
+
+export type ContextType = [StateType, Dispatch<ActionsType>]

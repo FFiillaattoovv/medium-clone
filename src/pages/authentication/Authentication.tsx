@@ -2,7 +2,7 @@ import React, {FormEvent, useContext, useEffect, useState} from 'react';
 import {Link, Redirect, RouteComponentProps} from 'react-router-dom';
 import {useFetch} from "../../hooks/useFetch";
 import {useLocalStorage} from "../../hooks/useLocalStorage";
-import {ContextType, CurrentUserContext, StateType} from "../../contexts/CurrentUser";
+import {ContextType, CurrentUserContext} from "../../contexts/CurrentUser";
 import {BackendErrorMessages} from "./components/BackendErrorMessages";
 
 export const Authentication = (props: RouteComponentProps) => {
@@ -16,7 +16,7 @@ export const Authentication = (props: RouteComponentProps) => {
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
     const [isSuccessfulSubmit, setIsSuccessfulSubmit] = useState(false)
-    const [, setCurrentUserState] = useContext(CurrentUserContext) as ContextType
+    const [, dispatch] = useContext(CurrentUserContext) as ContextType
     const [{response, isLoading, error}, doFetch] = useFetch(apiUrl)
     const [, setToken] = useLocalStorage('token')
 
@@ -38,14 +38,9 @@ export const Authentication = (props: RouteComponentProps) => {
         } else {
             setToken(response.user.token)
             setIsSuccessfulSubmit(true)
-            setCurrentUserState((state: StateType) => ({
-                ...state,
-                isLoggedIn: true,
-                isLoading: false,
-                currentUser: response.user
-            }))
+            dispatch({type: 'SET_AUTHORIZED', payload: response.user})
         }
-    }, [response, setToken, setCurrentUserState])
+    }, [response, setToken, dispatch])
 
     if (isSuccessfulSubmit) {
         return <Redirect to={'/'}/>
