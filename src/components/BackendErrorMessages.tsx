@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {FC} from 'react';
 
-export const BackendErrorMessages = ({backendErrors}: BackendErrorMessagesType) => {
+export const BackendErrorMessages: FC<BackendErrorMessagesType> = ({backendErrors}) => {
     const errorMessages = Object.keys(backendErrors).map((name: symbol | string) => {
         const messages = backendErrors[name].join(' ')
         return `${String(name)} ${messages}`

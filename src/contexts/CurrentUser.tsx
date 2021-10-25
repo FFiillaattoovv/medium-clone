@@ -52,7 +52,7 @@ export type StateType = {
     isLoading: boolean
     isLoggedIn: boolean | null
     currentUser: CurrentUserType | null
-} | {}
+}
 
 type LoadingActionType = {type: 'LOADING'}
 type SetAuthorizedActionType = {type: 'SET_AUTHORIZED', payload: CurrentUserType}

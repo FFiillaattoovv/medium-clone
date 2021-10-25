@@ -1,4 +1,5 @@
-import {FC, FormEvent, useState} from "react";
+import {FC, FormEvent, useEffect, useState} from "react";
+import {BackendErrorMessages} from "./BackendErrorMessages";
 
 export const ArticleForm: FC<ArticleFormPropsType> = ({onSubmit, error, initialValues}) => {
     const [title, setTitle] = useState('')
@@ -6,17 +7,34 @@ export const ArticleForm: FC<ArticleFormPropsType> = ({onSubmit, error, initialV
     const [body, setBody] = useState('')
     const [tagList, setTagList] = useState('')
 
+    const article: InitialValuesType = {
+        title: title,
+        description: description,
+        body: body,
+        tagList: tagList.split(' ')
+    }
+
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-
+        onSubmit(article)
     }
+
+    useEffect(() => {
+        if (!initialValues) {
+            return
+        }
+        setTitle(initialValues.title)
+        setDescription(initialValues.description)
+        setBody(initialValues.body)
+        setTagList(initialValues.tagList.join(' '))
+    }, [initialValues])
 
     return (
         <div className="editor-page">
             <div className="container page">
                 <div className="row">
                     <div className="col-md-10 offset-md-1 col-xs-12">
-                        BackendErrorMessage
+                        {error && <BackendErrorMessages backendErrors={error}/>}
                         <form onSubmit={handleSubmit}>
                             <fieldset>
                                 <fieldset className="form-group">
@@ -58,10 +76,15 @@ export const ArticleForm: FC<ArticleFormPropsType> = ({onSubmit, error, initialV
     )
 }
 
+export type InitialValuesType = {
+    title: string
+    description: string
+    body: string
+    tagList: Array<string>
+}
+
 type ArticleFormPropsType = {
-    onSubmit: Function
-    error?: string
-    initialValues: {
-        article: string
-    }
+    onSubmit: (article: InitialValuesType) => void
+    error?: Array<string>
+    initialValues: InitialValuesType
 }
