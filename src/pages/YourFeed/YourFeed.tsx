@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {FC, useEffect} from 'react';
 import {HookResponseType, useFetch} from "../../hooks/useFetch";
 import {Feed} from "../../components/Feed";
 import {Pagination} from "../../components/Pagination";
@@ -10,7 +10,7 @@ import {Loading} from "../../components/Loading";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {FeedToggler} from "../../components/FeedToggler";
 
-export const YourFeed = ({location, match}: RouteComponentProps) => {
+export const YourFeed: FC<RouteComponentProps> = ({location, match}) => {
     const {currentPage, offset} = getPaginator(location.search)
     const stringifiedParams = stringify({
         limit,
