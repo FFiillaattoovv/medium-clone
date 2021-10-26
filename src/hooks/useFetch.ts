@@ -31,7 +31,11 @@ export const useFetch = (url: string) => {
         axios(baseUrl + url, requestOptions)
             .then((res: any) => {
                 setIsLoading(false)
-                setResponse(res.data)
+                if (res.data) {
+                    setResponse(res.data)
+                } else {
+                    setResponse(res)
+                }
             })
             .catch(error => {
                 setIsLoading(false)
@@ -45,7 +49,7 @@ export const useFetch = (url: string) => {
 }
 
 type OptionsType = {
-    method?: 'GET'| 'POST' | 'PUT' | 'DELETE' | 'PATCH',
+    method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
     data: {}
 } | {}
 
