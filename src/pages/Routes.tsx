@@ -5,12 +5,14 @@ import {Authentication} from "./authentication/Authentication";
 import {TagFeed} from "./tagFeed/TagFeed";
 import {YourFeed} from "./YourFeed/YourFeed";
 import {CreateArticle} from "./createArticle/CreateArticle";
+import {EditArticle} from "./editArticle/EditArticle";
 
 export const Routes = () => {
     return (
         <Switch>
             <Route path={'/'} component={GlobalFeed} exact/>
             <Route path={'/articles/new'} component={CreateArticle}/>
+            <Route path={'/articles/:slug/edit'} component={EditArticle}/>
             <Route path={'/feed'} component={YourFeed}/>
             <Route path={'/tags/:slug'} component={TagFeed}/>
             <Route path={'/login'} component={Authentication}/>

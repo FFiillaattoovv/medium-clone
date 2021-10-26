@@ -81,7 +81,7 @@ export type InitialValuesType = {
     description: string
     body: string
     tagList: Array<string>
-}
+} | null
 
 type ArticleFormPropsType = {
     onSubmit: (article: InitialValuesType) => void
