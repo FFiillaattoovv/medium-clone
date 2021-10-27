@@ -2,8 +2,8 @@ import React, {createContext, Dispatch, useReducer} from "react";
 
 const initialState: StateType = {
     isLoading: false,
-    isLoggedIn: null,
-    currentUser: null,
+    isLoggedIn: undefined,
+    currentUser: undefined,
 }
 
 const reducer = (state: StateType, action: ActionsType) => {
@@ -20,6 +20,11 @@ const reducer = (state: StateType, action: ActionsType) => {
         case 'SET_UNAUTHORIZED':
             return {
                 ...state,
+                isLoggedIn: false
+            }
+        case 'LOGOUT':
+            return {
+                ...initialState,
                 isLoggedIn: false
             }
         default:
@@ -46,17 +51,18 @@ type CurrentUserType = {
     token: string
     username: string
     bio: string
-    image: string | null
+    image: string | undefined
 }
 export type StateType = {
     isLoading: boolean
-    isLoggedIn: boolean | null
-    currentUser: CurrentUserType | null
+    isLoggedIn: boolean | undefined
+    currentUser: CurrentUserType | undefined
 }
 
 type LoadingActionType = {type: 'LOADING'}
 type SetAuthorizedActionType = {type: 'SET_AUTHORIZED', payload: CurrentUserType}
 type SetUnauthorizedActionType = {type: 'SET_UNAUTHORIZED'}
-type ActionsType = LoadingActionType | SetAuthorizedActionType | SetUnauthorizedActionType
+type LogoutActionType = {type: 'LOGOUT'}
+type ActionsType = LoadingActionType | SetAuthorizedActionType | SetUnauthorizedActionType | LogoutActionType
 
 export type ContextType = [StateType, Dispatch<ActionsType>]
